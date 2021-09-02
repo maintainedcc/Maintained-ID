@@ -29,6 +29,7 @@ export class AuthService {
 		]
 		const paramString = new URLSearchParams(tokenParams).toString();
 
+		// Get user token from GitHub
 		const headers = new Headers({ "Accept": "application/json" });
 		const token = await fetch(`${url}?${paramString}`, { method: "POST", headers: headers })
 			.then(res => res.text())
@@ -37,8 +38,16 @@ export class AuthService {
 				throw new EvalError("Failed to get token: " + ex);
 			});
 		
+		// Get GitHub UUID of user from token
 		const uuid = await this.getUserUUID(token);
-		const _nanoid = nanoid();
+		
+		// Generate an unused nanoid for the user
+		let _nanoid = nanoid();
+		do if (this.isAuthorized(_nanoid))
+			_nanoid = nanoid();
+		while (this.isAuthorized(_nanoid));
+
+		// Add user to the identity service, return nanoid
 		this.identity.authorizeNanoid(_nanoid, uuid);
 		return _nanoid;
 	}
