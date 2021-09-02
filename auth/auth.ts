@@ -43,9 +43,8 @@ export class AuthService {
 		
 		// Generate an unused nanoid for the user
 		let _nanoid = nanoid();
-		do if (this.isAuthorized(_nanoid))
+		while (this.isAuthorized(_nanoid))
 			_nanoid = nanoid();
-		while (this.isAuthorized(_nanoid));
 
 		// Add user to the identity service, return nanoid
 		this.identity.authorizeNanoid(_nanoid, uuid);
