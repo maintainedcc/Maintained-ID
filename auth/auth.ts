@@ -1,22 +1,17 @@
 
-import { config, nanoid } from "../deps.ts";
-import { IdentityService } from "./identity.ts";
+import { config } from "../deps.ts";
+import { generateJWT } from "../keys/keys.ts";
 
 export class AuthService {
-	private identity: IdentityService;
 
-	constructor() {
-		this.identity = new IdentityService();
+	// Returns if JWT is authorized (true/false)
+	isAuthorized(JWT: string): boolean {
+		return this.identity.isAuthorized(JWT);
 	}
 
-	// Returns if nanoid is authorized (true/false)
-	isAuthorized(nanoid: string): boolean {
-		return this.identity.isAuthorized(nanoid);
-	}
-
-	// Returns GitHub UUID from nanoid
-	getAuthorization(nanoid: string): string {
-		return this.identity.getAuthorization(nanoid);
+	// Returns GitHub UUID from JWT
+	getAuthorization(JWT: string): string {
+		return this.identity.getAuthorization(JWT);
 	}
 
 	async authorize(code: string, state: string): Promise<string> {
@@ -41,14 +36,9 @@ export class AuthService {
 		// Get GitHub UUID of user from token
 		const uuid = await this.getUserUUID(token);
 		
-		// Generate an unused nanoid for the user
-		let _nanoid = nanoid();
-		while (this.isAuthorized(_nanoid))
-			_nanoid = nanoid();
-
-		// Add user to the identity service, return nanoid
-		this.identity.authorizeNanoid(_nanoid, uuid);
-		return _nanoid;
+		// Generate a JWT for the user
+		let _JWT = await generateJWT(uuid);
+		return _JWT;
 	}
 
 	// Get username from token and API call

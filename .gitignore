@@ -2,3 +2,4 @@
 environment/environment.dev.ts
 environment/environment.nightly.ts
 environment/environment.production.ts
+keys/private.key.ts
