@@ -1,6 +1,6 @@
 
 import { secret } from "./private.key.ts";
-import { crypto, SignJWT } from "../deps.ts";
+import { crypto, SignJWT, jwtVerify } from "../deps.ts";
 
 if (!crypto.subtle.importKey) {
   throw new Error("Cryptography not supported");
@@ -9,7 +9,7 @@ if (!crypto.subtle.importKey) {
 export const key = await crypto.subtle.importKey(
   "raw", secret,
   { name: "HMAC", hash: "SHA-256" } as any,
-  false, ["sign"]
+  false, ["sign", "verify"]
 ) as CryptoKey;
 
 export async function generateJWT(uuid: string): Promise<string> {
@@ -23,4 +23,7 @@ export async function generateJWT(uuid: string): Promise<string> {
     .sign(key);
 }
 
-console.log(await generateJWT("GHUUID"));
+const jwt = await generateJWT("12345");
+
+console.log(jwt);
+console.log(await jwtVerify(jwt, key, { issuer: "maintained-id" }));

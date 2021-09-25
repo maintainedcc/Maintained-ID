@@ -1,17 +1,14 @@
 
-import { config } from "../deps.ts";
-import { generateJWT } from "../keys/keys.ts";
+import { config, jwtVerify } from "../deps.ts";
+import { key, generateJWT } from "../keys/keys.ts";
 
 export class AuthService {
 
-	// Returns if JWT is authorized (true/false)
-	isAuthorized(JWT: string): boolean {
-		return this.identity.isAuthorized(JWT);
-	}
-
 	// Returns GitHub UUID from JWT
-	getAuthorization(JWT: string): string {
-		return this.identity.getAuthorization(JWT);
+	async getAuthorization(JWT: string): Promise<string> {
+		const uuid = (await jwtVerify(JWT, key)).payload.sub;
+		if (uuid) return uuid;
+		else throw new Error("Failed to get UUID from JWT");
 	}
 
 	async authorize(code: string, state: string): Promise<string> {
@@ -37,8 +34,7 @@ export class AuthService {
 		const uuid = await this.getUserUUID(token);
 		
 		// Generate a JWT for the user
-		let _JWT = await generateJWT(uuid);
-		return _JWT;
+		return await generateJWT(uuid);
 	}
 
 	// Get username from token and API call
