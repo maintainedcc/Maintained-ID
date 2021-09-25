@@ -50,4 +50,27 @@ export class AuthService {
 				throw new EvalError("Failed to get UUID: " + ex);
 			});
 	}
+	
+	// Get the auth URL from environment file
+	// Sets state to a valid Maintained app to pass JWT to after auth
+	getAuthURL(app: string): string {
+		const authUrl = "https://github.com/login/oauth/authorize";
+
+		// make sure app is sanitized to just letters
+		const state = app.replace(/[^a-zA-Z]/g, "");
+
+		const authParams: string[][] = [
+			["client_id", config.client_id],
+			["redirect_uri", config.redirect_uri],
+			["state", state]
+		];
+		const authParamString = new URLSearchParams(authParams).toString();
+
+		return `${authUrl}?${authParamString}`;
+	}
+
+	// Get GitHub app token manangement URL
+	getManagementURL(): string {
+		return `https://github.com/settings/connections/applications/${config.client_id}`;
+	}
 }
