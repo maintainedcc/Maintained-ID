@@ -27,8 +27,6 @@ router
 		const redir = app ? `${app}.maintained.cc` : "maintained.cc";
 
 		const jwt = await auth.authorize(code, state);
-
-		ctx.cookies.set("token", jwt, { maxAge: 864000, sameSite: "strict", path: "/" });
 		ctx.response.redirect(`https://${redir}/auth?jwt=${jwt}`);
 	})
 	.get("/oauth/login", ctx => {
