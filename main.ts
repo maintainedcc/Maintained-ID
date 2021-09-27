@@ -24,7 +24,7 @@ router
 
 		// Sanitize state to get app namespace (just in case)
 		const app = state.replace(/[^a-zA-Z]/g, "");
-		const redir = app ? `${app}.maintained.cc` : "maintained.cc";
+		const redir = app ? `${app}.${config.redirect_base}` : config.redirect_base;
 
 		const jwt = await auth.authorize(code, state);
 		ctx.response.redirect(`https://${redir}/auth?jwt=${jwt}`);
