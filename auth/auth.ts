@@ -43,7 +43,7 @@ export class AuthService {
 			"Accept": "application/vnd.github.v3+json",
 			"Authorization": `token ${token}`
 		});
-		return fetch("https://api.github.com/user", { headers: headers })
+		return await fetch("https://api.github.com/user", { headers: headers })
 			.then(res => res.text())
 			.then(res => JSON.parse(res)["login"])
 			.catch(ex => {
