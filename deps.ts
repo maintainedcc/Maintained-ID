@@ -8,4 +8,4 @@ export { jwtVerify } from "https://deno.land/x/jose@v3.18.0/jwt/verify.ts";
 export { SignJWT } from "https://deno.land/x/jose@v3.18.0/jwt/sign.ts";
 
 // Service dependencies
-export { config } from "./environment/environment.ts";
+export { config } from "./environment/environment.dev.ts";

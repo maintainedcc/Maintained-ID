@@ -9,6 +9,7 @@ import { AuthService } from "./auth/auth.ts";
 // Oak server + middleware
 const app = new Application();
 const router = new Router();
+const selfTester = new Router();
 
 // Services
 const auth = new AuthService();
@@ -36,8 +37,20 @@ router
 		ctx.response.redirect(auth.getManagementURL());
 	});
 
+selfTester
+	.get("/auth", async ctx => {
+		const params = ctx.request.url.searchParams;
+		const jwt = params.get("jwt") ?? "";
+		const uuid = await auth.getAuthorization(jwt);
+		ctx.response.body = `JWT: ${jwt}\nVerified As: ${uuid}`;
+	});
+
 app.use(router.allowedMethods());
 app.use(router.routes());
 
+app.use(selfTester.allowedMethods());
+app.use(selfTester.routes());
+
 app.listen({ port: config.port });
 console.log(`Port: ${config.port}`);
+console.log(`http://localhost:${config.port}/oauth/login`);
