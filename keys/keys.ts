@@ -1,6 +1,6 @@
 
 import { secret } from "./private.key.ts";
-import { crypto, SignJWT, jwtVerify } from "../deps.ts";
+import { crypto, SignJWT } from "../deps.ts";
 
 if (!crypto.subtle.importKey) {
   throw new Error("Cryptography not supported");
@@ -22,8 +22,3 @@ export async function generateJWT(uuid: string): Promise<string> {
     .setExpirationTime("24h")
     .sign(key);
 }
-
-const jwt = await generateJWT("12345");
-
-console.log(jwt);
-console.log(await jwtVerify(jwt, key, { issuer: "maintained-id" }));
