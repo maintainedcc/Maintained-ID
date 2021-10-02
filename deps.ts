@@ -1,6 +1,6 @@
 
 // Oak (Server)
-export { Application, Router, send } from "https://deno.land/x/oak@v7.6.2/mod.ts";
+export { Application, Router } from "https://deno.land/x/oak@v7.6.2/mod.ts";
 
 // crypto & jose (JWT)
 export { crypto } from "https://deno.land/std@0.108.0/crypto/mod.ts";

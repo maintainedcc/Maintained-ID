@@ -2,7 +2,6 @@
 import { 
 	Application,
 	Router,
-	send,
 	config
 } from "./deps.ts";
 import { AuthService } from "./auth/auth.ts";
