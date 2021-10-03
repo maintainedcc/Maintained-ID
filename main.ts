@@ -27,7 +27,7 @@ router
 		const redir = app ? `${app}.${config.redirect_base}` : config.redirect_base;
 
 		const jwt = await auth.authorize(code, state);
-		ctx.response.redirect(`https://${redir}/auth?jwt=${jwt}`);
+		ctx.response.redirect(`//${redir}/auth?jwt=${jwt}`);
 	})
 	.get("/oauth/login", ctx => {
 		const params = ctx.request.url.searchParams;
