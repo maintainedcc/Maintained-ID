@@ -1,9 +1,5 @@
 
-import { 
-	Application,
-	Router,
-	config
-} from "./deps.ts";
+import { Application,	Router } from "./deps.ts";
 import { AuthService } from "./auth/auth.ts";
 
 // Oak server + middleware
@@ -24,7 +20,8 @@ router
 
 		// Sanitize state to get app namespace (just in case)
 		const app = state.replace(/[^a-zA-Z]/g, "");
-		const redir = app ? `${app}.${config.redirect_base}` : config.redirect_base;
+		const base = Deno.env.get("REDIRECT_BASE") ?? "";
+		const redir = app ? `${app}.${base}` : base;
 
 		const jwt = await auth.authorize(code, state);
 		ctx.response.redirect(`//${redir}/auth?jwt=${jwt}`);
@@ -51,6 +48,7 @@ app.use(router.routes());
 app.use(selfTester.allowedMethods());
 app.use(selfTester.routes());
 
-app.listen({ port: config.port });
-console.log(`Port: ${config.port}`);
-console.log(`http://localhost:${config.port}/oauth/login`);
+const port = parseInt(Deno.env.get("PORT")??"8999");
+app.listen({ port: port });
+console.log(`Port: ${port}`);
+console.log(`http://localhost:${port}/oauth/login`);

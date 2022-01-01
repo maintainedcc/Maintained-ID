@@ -1,5 +1,5 @@
 
-import { config, jwtVerify } from "../deps.ts";
+import { jwtVerify } from "../deps.ts";
 import { key, generateJWT } from "../keys/keys.ts";
 
 export class AuthService {
@@ -14,8 +14,8 @@ export class AuthService {
 	async authorize(code: string, state: string): Promise<string> {
 		const url = "https://github.com/login/oauth/access_token";
 		const tokenParams: string[][] = [
-			["client_id", config.client_id],
-			["client_secret", config.client_secret],
+			["client_id", Deno.env.get("CLIENT_ID") ?? ""],
+			["client_secret", Deno.env.get("CLIENT_SECRET") ?? ""],
 			["code", code],
 			["state", state]
 		]
@@ -60,8 +60,8 @@ export class AuthService {
 		const state = app.replace(/[^a-zA-Z]/g, "");
 
 		const authParams: string[][] = [
-			["client_id", config.client_id],
-			["redirect_uri", config.redirect_uri],
+			["client_id", Deno.env.get("CLIENT_ID") ?? ""],
+			["redirect_uri", Deno.env.get("REDIRECT_URI") ?? ""],
 			["state", state]
 		];
 		const authParamString = new URLSearchParams(authParams).toString();
@@ -71,6 +71,6 @@ export class AuthService {
 
 	// Get GitHub app token manangement URL
 	getManagementURL(): string {
-		return `https://github.com/settings/connections/applications/${config.client_id}`;
+		return `https://github.com/settings/connections/applications/${Deno.env.get("CLIENT_ID")}`;
 	}
 }

@@ -1,5 +1,3 @@
 
-environment/environment.dev.ts
-environment/environment.nightly.ts
-environment/environment.production.ts
+.env
 keys/private.key.ts
