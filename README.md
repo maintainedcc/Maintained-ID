@@ -17,8 +17,8 @@ Identity &amp; authentication for Maintained services
 ### Dependencies
 - Deno ≥ 1.14 (minimum for WebCrypto support)
 ### Secrets and Files
-- `environment/environment.dev.ts`: [example format given](environment/environment.ts)
-- `keys/private.key.ts`: `export const secret: UInt8Array` (HMAC secret)
+- `.env` (see `.env.example`)
+- `keys/private.key.ts`: `export const secret: UInt8Array = [...]` (HMAC secret)
 ### Test & Run
 - `deno test`
 - `deno run -A main.ts`
