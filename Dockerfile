@@ -1,5 +1,5 @@
 
-FROM denoland/deno:alpine-1.17.0
+FROM denoland/deno:alpine-1.18.0
 
 EXPOSE 8999
 
