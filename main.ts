@@ -22,9 +22,10 @@ router
 		const app = state.replace(/[^a-zA-Z]/g, "");
 		const base = Deno.env.get("REDIRECT_BASE") ?? "";
 		const redir = app ? `${app}.${base}` : base;
+		const protocol = Deno.env.get("REDIRECT_PROTOCOL") ?? "http";
 
 		const jwt = await auth.authorize(code, state);
-		ctx.response.redirect(`//${redir}/auth?jwt=${jwt}`);
+		ctx.response.redirect(`${protocol}://${redir}/auth?jwt=${jwt}`);
 	})
 	.get("/oauth/login", ctx => {
 		const params = ctx.request.url.searchParams;
