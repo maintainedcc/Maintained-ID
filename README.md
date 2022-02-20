@@ -2,7 +2,6 @@
 Identity &amp; authentication for Maintained services
 
 ## Flow
----
 
 1. User authenticates with GitHub using Maintained GitHub app (public scope only)
 2. User is redirected to id.maintained.cc with OAuth code, state
@@ -12,13 +11,11 @@ Identity &amp; authentication for Maintained services
 6. JWT can now be used across any Maintained service to authenticate
 
 ## Deployment
----
 
 ### Dependencies
 - Deno ≥ 1.18.0
 ### Secrets and Files
 - `.env` (see `.env.example`)
-- `keys/private.key.ts`: `export const secret: UInt8Array = [...]` (HMAC secret)
 ### Test & Run
 - `deno test`
 - `deno run -A main.ts`
