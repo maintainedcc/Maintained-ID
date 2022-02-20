@@ -7,5 +7,5 @@ const keyArr = new Uint8Array(arr);
 export const key = await crypto.subtle.importKey(
     "raw", keyArr,
     { name: "HMAC", hash: "SHA-256" } as any,
-    false, ["verify"]
+    false, ["sign", "verify"]
   ) as CryptoKey;
