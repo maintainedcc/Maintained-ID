@@ -1,15 +1,8 @@
 
 import { assert, assertEquals } from "../deps.test.ts";
 import { jwtVerify } from "../deps.ts";
-import { key, generateJWT } from "./keys.ts";
-
-Deno.test({
-	name: "key imports correctly",
-	fn(): void {
-		assert(key !== undefined && key !== null);
-		assert(key.extractable === false);
-	}
-});
+import { generateJWT } from "./keys.ts";
+import { key } from "./key.ts";
 
 Deno.test({
 	name: "generateJWT generates a valid JWT",

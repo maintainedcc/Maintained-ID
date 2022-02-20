@@ -1,6 +1,7 @@
 
 import { jwtVerify } from "../deps.ts";
-import { key, generateJWT } from "../keys/keys.ts";
+import { generateJWT } from "../keys/keys.ts";
+import { key } from "../keys/key.ts";
 
 export class AuthService {
 
