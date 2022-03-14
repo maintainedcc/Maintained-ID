@@ -31,22 +31,22 @@ export class AuthService {
 				throw new EvalError("Failed to get token: " + ex);
 			});
 		
-		// Get GitHub UUID of user from token
-		const uuid = await this.getUserUUID(token);
+		// Get GitHub username + uuid of user from token
+		const { login, id } = await this.getUser(token);
 		
 		// Generate a JWT for the user
-		return await generateJWT(uuid);
+		return await generateJWT(login, id);
 	}
 
 	// Get username from token and API call
-	private async getUserUUID(token: string): Promise<string> {
+	private async getUser(token: string): Promise<any> {
 		const headers = new Headers({
 			"Accept": "application/vnd.github.v3+json",
 			"Authorization": `token ${token}`
 		});
 		return await fetch("https://api.github.com/user", { headers: headers })
 			.then(res => res.text())
-			.then(res => JSON.parse(res)["login"])
+			.then(res => JSON.parse(res))
 			.catch(ex => {
 				throw new EvalError("Failed to get UUID: " + ex);
 			});

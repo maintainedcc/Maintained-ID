@@ -7,13 +7,14 @@ import { key } from "./key.ts";
 Deno.test({
 	name: "generateJWT generates a valid JWT",
 	async fn(): Promise<void> {
-		const token = await generateJWT("someuuid");
+		const token = await generateJWT("someuuid", "1234");
 		assert(token !== undefined && token !== null);
 		assert(token.length > 0);
 		const payload = (await jwtVerify(token, key)).payload;
 		assert(payload !== undefined && payload !== null);
 		assert(payload["maintained-id:version"] !== undefined)
 		assertEquals(payload.iss, "maintained-id");
+		assertEquals(payload.aud, "1234");
 		assertEquals(payload.sub, "someuuid");
 	}
 })
